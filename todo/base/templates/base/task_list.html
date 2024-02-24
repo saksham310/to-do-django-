@@ -29,17 +29,33 @@
     <thead>
       <tr>
         <th scope="col">My tasks</th>
+        <th scope="col">Status</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
       {% for task in data %}
       <tr>
+        {% if task.complete %}
+        <td><strike>{{ task.title }}</strike></td>
+        <td>Completed</td>
+        {% else %}
         <td>{{ task.title }}</td>
+        <td>Incomplete</td>
+        {% endif %}
         <td>
           <a href='{% url "updateTask" task.id %}' class="btn btn-secondary"
             >Update</a
           >
+          <a href='{% url "deleteTask" task.id %}' class="mx-4 btn btn-danger"
+            >Delete</a
+          >
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3">
+          <h4>No To Do list created</h4>
         </td>
       </tr>
       {% endfor %}
@@ -47,7 +63,6 @@
   </table>
 </div>
 
-<!-- JavaScript to control the popup/modal -->
 <script>
   function openPopup() {
     document.getElementById("taskPopup").style.display = "block";
