@@ -5,4 +5,5 @@ from . models import Task
 def taskList(request):
     context={}
     data=Task.objects.all()
-    
+    context['data']=data
+    return render(request,'base/task_list.html',context)
