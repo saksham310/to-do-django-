@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %} {% block content %}
+<div class="container mt-5">
+  <h1 class="mt-5">My To Do List</h1>
+  <button onclick="openPopup()" class="btn btn-primary mt-3">Add Task</button>
+
+  <!-- Popup/Modal -->
+  <div id="taskPopup" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closePopup()">&times;</span>
+      <form method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="task_title">Task Title:</label>
+          <input
+            type="text"
+            id="task_title"
+            name="title"
+            class="form-control"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Task List Table -->
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th scope="col">My tasks</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in data %}
+      <tr>
+        <td>{{ task.title }}</td>
+        <td>
+          <a href='{% url "updateTask" task.id %}' class="btn btn-secondary"
+            >Update</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- JavaScript to control the popup/modal -->
+<script>
+  function openPopup() {
+    document.getElementById("taskPopup").style.display = "block";
+  }
+
+  function closePopup() {
+    document.getElementById("taskPopup").style.display = "none";
+  }
+</script>
+{% endblock %}
